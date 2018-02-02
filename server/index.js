@@ -1,6 +1,8 @@
 import express from 'express';
 import { resolve } from 'path';
 
+import webhookRouter from './webhooks';
+
 const PORT = process.env.PORT || 4000;
 
 const app = express();
@@ -10,9 +12,7 @@ if (isProd) {
   app.use(express.static(resolve(__dirname, '../build')));
 }
 
-app.get('/', (req, res) => {
-  res.send('Hello World!');
-});
+app.use('/webhook', webhookRouter);
 
 if (isProd) {
   app.get('*', (req, res) => {
