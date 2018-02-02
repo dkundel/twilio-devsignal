@@ -1,8 +1,20 @@
 import { WebClient } from '@slack/client';
+import kebabCase from 'lodash/kebabCase';
+import Twilio from 'twilio';
 
-import { SLACK_TOKEN, BOT_CHANNEL } from '../config';
+import {
+  TWILIO_ACCOUNT_SID,
+  TWILIO_API_KEY,
+  TWILIO_API_SECRET,
+  TWILIO_CHAT_SERVICE_SID,
+  SLACK_TOKEN,
+  BOT_CHANNEL
+} from '../config';
 
 const slackClient = new WebClient(SLACK_TOKEN);
+const twilioClient = new Twilio(TWILIO_API_KEY, TWILIO_API_SECRET, {
+  accountSid: TWILIO_ACCOUNT_SID
+});
 
 function createInitialMessage(info) {
   const { message, lang, name, product, accountSid, sessionId } = info;
@@ -51,6 +63,31 @@ function createInitialMessage(info) {
   };
 }
 
+export async function prepareChat(accountSid, sessionId, name) {
+  const chatService = twilioClient.chat.services(TWILIO_CHAT_SERVICE_SID);
+  const user = await chatService.users.create({
+    identity: `${accountSid}:${kebabCase(name)}`,
+    friendlyName: name
+  });
+
+  let channel;
+  try {
+    channel = await chatService.channels.create({
+      friendlyName: `Chat for ${name}`,
+      type: 'private',
+      uniqueName: sessionId
+    });
+  } catch (err) {
+    channel = await chatService.channels(sessionId).fetch();
+  }
+
+  await chatService.channels(channel.sid).members.create({
+    identity: user.identity
+  });
+
+  return user;
+}
+
 export default async function handleRequest(req, res, next) {
   const { message, lang, name, product } = req.body;
   const accountSid = 'ACxxxxxxxxxxxxxxx';
@@ -67,6 +104,7 @@ export default async function handleRequest(req, res, next) {
   });
 
   try {
+    await prepareChat(accountSid, sessionId, name);
     await slackClient.chat.postMessage(
       channelId,
       `Fast someone needs your help! Anyone up for the challenge?`,
