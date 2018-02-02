@@ -18,7 +18,8 @@
     "twilio": "^3.11.2",
     "twilio-chat": "^2.1.0",
     "twilio-sync": "^0.7.4",
-    "twilio-video": "^1.7.0"
+    "twilio-video": "^1.7.0",
+    "uuid": "^3.2.1"
   },
   "scripts": {
     "dev": "stmux -w always -m beep,system -- [ [ \"npm run dev:react\" ] : [ \"npm run dev:server\" ] ]",
