@@ -2,6 +2,7 @@ import express from 'express';
 import { resolve } from 'path';
 
 import webhookRouter from './webhooks';
+import apiRouter from './api';
 
 const PORT = process.env.PORT || 4000;
 
@@ -13,6 +14,7 @@ if (isProd) {
 }
 
 app.use('/webhook', webhookRouter);
+app.use('/api', apiRouter);
 
 if (isProd) {
   app.get('*', (req, res) => {
