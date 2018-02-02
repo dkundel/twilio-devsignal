@@ -17,7 +17,8 @@
     "twilio-video": "^1.7.0"
   },
   "scripts": {
-    "dev": "npm-run-all dev:*",
+    "dev":
+      "stmux -w always -m beep,system -- [ [ \"npm run dev:react\" ] : [ \"npm run dev:server\" ] ]",
     "dev:react": "react-scripts start",
     "dev:server": "nodemon server/index.js --exec babel-node",
     "start": "node .",
@@ -29,15 +30,14 @@
     "prepare": "npm run build"
   },
   "nodemonConfig": {
-    "watch": [
-      "server"
-    ]
+    "watch": ["server"]
   },
   "proxy": "http://localhost:4000",
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-preset-env": "^1.6.1",
     "nodemon": "^1.14.11",
-    "npm-run-all": "^4.1.2"
+    "npm-run-all": "^4.1.2",
+    "stmux": "^1.4.19"
   }
 }
