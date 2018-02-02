@@ -1,6 +1,7 @@
 import { WebClient } from '@slack/client';
 import kebabCase from 'lodash/kebabCase';
 import Twilio from 'twilio';
+import uuid from 'uuid/v4';
 
 import {
   TWILIO_ACCOUNT_SID,
@@ -91,7 +92,7 @@ export async function prepareChat(accountSid, sessionId, name) {
 export default async function handleRequest(req, res, next) {
   const { message, lang, name, product } = req.body;
   const accountSid = 'ACxxxxxxxxxxxxxxx';
-  const sessionId = 'something-foo';
+  const sessionId = uuid();
   const channelId = BOT_CHANNEL;
 
   const opts = createInitialMessage({
