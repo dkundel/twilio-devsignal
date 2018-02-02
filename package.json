@@ -4,7 +4,10 @@
   "private": true,
   "main": "dist/index.js",
   "dependencies": {
+    "@slack/client": "^3.15.0",
+    "@slack/events-api": "^1.0.1",
     "body-parser": "^1.18.2",
+    "dotenv": "^5.0.0",
     "express": "^4.16.2",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
@@ -17,8 +20,7 @@
     "twilio-video": "^1.7.0"
   },
   "scripts": {
-    "dev":
-      "stmux -w always -m beep,system -- [ [ \"npm run dev:react\" ] : [ \"npm run dev:server\" ] ]",
+    "dev": "stmux -w always -m beep,system -- [ [ \"npm run dev:react\" ] : [ \"npm run dev:server\" ] ]",
     "dev:react": "react-scripts start",
     "dev:server": "nodemon server/index.js --exec babel-node",
     "start": "node .",
@@ -30,7 +32,9 @@
     "prepare": "npm run build"
   },
   "nodemonConfig": {
-    "watch": ["server"]
+    "watch": [
+      "server"
+    ]
   },
   "proxy": "http://localhost:4000",
   "devDependencies": {
