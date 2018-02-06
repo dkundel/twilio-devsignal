@@ -2,6 +2,7 @@ import { createSlackEventAdapter } from '@slack/events-api';
 import { WebClient } from '@slack/client';
 
 import { SLACK_VERIFICATION_TOKEN, SLACK_TOKEN } from '../config';
+import { sendMessageToThread, lookUpUser, getBotId } from '../services/slack';
 
 const slackEvents = createSlackEventAdapter(SLACK_VERIFICATION_TOKEN);
 const client = new WebClient(SLACK_TOKEN);
@@ -12,20 +13,6 @@ function safeAsync(fn) {
   };
 }
 
-async function getBotUser(bot) {
-  const botInfo = await client.bots.info({ bot });
-  console.log(botInfo);
-  return 'foo';
-}
-
-async function lookUpUser(userId) {
-  const { user } = await client.users.info(userId);
-  const { name, profile } = user;
-  const { bot_id } = profile;
-  const isBot = !!bot_id;
-  return { isBot, name };
-}
-
 async function isThreadStartedByBot(evt) {
   const { parent_user_id, thread_ts } = evt;
 
@@ -33,9 +20,10 @@ async function isThreadStartedByBot(evt) {
     return false;
   }
 
-  const { isBot, name } = await lookUpUser(parent_user_id);
+  const { isBot } = await lookUpUser(parent_user_id);
+  const { user_id } = await getBotId();
 
-  return isBot && name.indexOf('devsignal') === 0;
+  return isBot && parent_user_id === user_id;
 }
 
 async function onMessage(evt) {
@@ -56,13 +44,10 @@ async function onMessage(evt) {
 async function onAppMention(evt) {
   const { channel, ts, thread_ts } = evt;
   if (!thread_ts) {
-    await client.chat.postMessage(
+    await sendMessageToThread(
       channel,
-      'Please only respond inside threads...Thank you :penguin-flip:',
-      {
-        as_user: true,
-        thread_ts: ts
-      }
+      thread_ts,
+      'Please only respond inside threads...Thank you :penguin-flip:'
     );
   }
 }
