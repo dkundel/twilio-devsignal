@@ -15,37 +15,36 @@ export default class Chat extends Component {
   constructor(props) {
     super(props);
     this.sendMessage = this.sendMessage.bind(this);
+    this.updateCurrentMessage = this.updateCurrentMessage.bind(this);
   }
 
+  userMap = new Map();
+
   state = {
-    messages: [
-      { author: 'foobar', body: 'Hello how is it going?', sid: 'sdaf' },
-      { author: 'bla', body: 'Something else', sid: 'asfdsdf' }
-    ],
+    messages: [],
     disconnected: true,
     error: false,
-    members: []
+    members: [],
+    currentMessage: ''
   };
 
   async componentWillMount() {
-    // try {
-    //   await this.initialize();
-    // } catch (err) {
-    //   console.error(err);
-    //   this.setState({ error: 'Something failed with establishing the chat' });
-    // }
+    try {
+      await this.initialize();
+    } catch (err) {
+      console.error(err);
+      this.setState({ error: 'Something failed with establishing the chat' });
+    }
   }
 
   async initialize() {
-    const { token, channelName } = await this.props.fetch();
+    const { token, channelName } = this.props;
     const client = await ChatClient.create(token);
 
     this.registerListeners(client);
 
-    const channel = await client.getChannelByUniqueName({
-      uniqueName: channelName
-    });
-    return channel.join();
+    const channel = await client.getChannelByUniqueName(channelName);
+    return channel;
   }
 
   registerListeners(client) {
@@ -61,7 +60,7 @@ export default class Chat extends Component {
 
   async fetchInitialMessages(channel) {
     const page = await channel.getMessages();
-    this.setState({ messages: [...page.items] });
+    this.setState({ disconnected: false, messages: [...page.items] });
   }
 
   handleNewMessage(message) {
@@ -72,9 +71,16 @@ export default class Chat extends Component {
     this.setState({ members: [...this.state.members, member] });
   }
 
+  updateCurrentMessage(evt) {
+    const value = evt.target.value;
+    this.setState({ currentMessage: value });
+  }
+
   sendMessage(evt) {
+    evt.preventDefault();
     const message = evt.target.message ? evt.target.message.value : '';
     this.channel.sendMessage(message);
+    this.setState({ currentMessage: '' });
   }
 
   render() {
@@ -96,10 +102,14 @@ export default class Chat extends Component {
         <form onSubmit={this.sendMessage}>
           <Input
             type="text"
+            value={this.state.currentMessage}
             placeholder="Type your message..."
             name="message"
+            onChange={this.updateCurrentMessage}
           />
-          <Button type="submit">Send</Button>
+          <Button type="submit" disabled={this.state.disconnected}>
+            Send
+          </Button>
         </form>
       </Fragment>
     );

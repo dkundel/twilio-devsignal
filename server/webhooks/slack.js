@@ -42,8 +42,7 @@ async function onMessage(evt) {
   // message is in response to a thread that was started by this bot
   // handle message
   const info = await getInfoFromThreadId(evt.thread_ts);
-  // console.log(evt);
-  await sendMessageToChannel(evt.text, info.sessionId);
+  await sendMessageToChannel(evt.text, info.sessionId, 'devangel');
 }
 
 async function onAppMention(evt) {

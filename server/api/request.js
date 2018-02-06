@@ -12,11 +12,15 @@ import {
   createInitialMessage,
   sendMessageWithOptions
 } from '../services/slack';
-import { createChannel } from '../services/chat';
+import {
+  createChannel,
+  generateTokenFor,
+  sendMessageToChannel
+} from '../services/chat';
 import { createNewSession } from '../services/data';
 
 export default async function handleRequest(req, res, next) {
-  const { message, lang, name, product } = req.body;
+  const { message, lang, username: name, product } = req.body;
   const accountSid = 'ACxxxxxxxxxxxxxxx';
   const sessionId = uuid();
   const channelId = BOT_CHANNEL;
@@ -27,6 +31,7 @@ export default async function handleRequest(req, res, next) {
 
   try {
     const identity = await createChannel(accountSid, sessionId, name);
+    await sendMessageToChannel(message, sessionId, identity);
     info.identity = identity;
     const msg = await sendMessageWithOptions(
       channelId,
@@ -34,7 +39,8 @@ export default async function handleRequest(req, res, next) {
       opts
     );
     await createNewSession(sessionId, msg.ts, info);
-    res.send('Sent');
+    const token = generateTokenFor(identity);
+    res.send({ token, channelName: sessionId });
   } catch (err) {
     console.error(err);
     res.status(500).send('Internal error');

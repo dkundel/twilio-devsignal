@@ -23,17 +23,25 @@ export async function handleRequest(req, res, next) {
   const sessionId = await getChannelNameFromSid(ChannelSid);
   const info = await getInfoFromSessionId(sessionId);
 
-  if (info.identity !== From) {
+  if (info.identity !== From && From !== 'devangel') {
     // no need to forward to slack
     res.send();
     return;
   }
 
-  await sendMessageToThread(
-    BOT_CHANNEL,
-    info.threadId,
-    `**${info.name}** wrote: ${Body}`
-  );
+  try {
+    let messageContent;
+    if (From === 'devangel') {
+      messageContent =
+        ':warning: Another devangel answered in the chat. Open the chat dialog to see the full history :warning:';
+    } else {
+      messageContent = `_${info.name} wrote:_\n${Body}`;
+    }
+    await sendMessageToThread(BOT_CHANNEL, info.threadId, messageContent);
+  } catch (err) {
+    console.error(err);
+  }
+  res.send();
 }
 
 export const handleRequestSafely = safeAsync(handleRequest);

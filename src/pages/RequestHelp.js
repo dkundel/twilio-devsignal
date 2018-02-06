@@ -15,7 +15,7 @@ export default class RequestHelp extends Component {
     this.submitForm = this.submitForm.bind(this);
   }
 
-  submitForm(evt) {
+  async submitForm(evt) {
     evt.preventDefault();
     const form = evt.target;
     const { username, lang, product, message } = form;
@@ -25,7 +25,22 @@ export default class RequestHelp extends Component {
       product: product.value,
       message: message.value
     };
-    console.log(info);
+
+    try {
+      const resp = await fetch('/api/request', {
+        method: 'POST',
+        body: JSON.stringify(info),
+        headers: new Headers({
+          'Content-Type': 'application/json'
+        })
+      });
+
+      const { token, channelName } = await resp.json();
+      localStorage.setItem(channelName, token);
+      this.props.history.push(`/session/${channelName}`);
+    } catch (err) {
+      console.error(err);
+    }
   }
   render() {
     return (

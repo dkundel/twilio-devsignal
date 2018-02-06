@@ -1,6 +1,7 @@
 import { WebClient } from '@slack/client';
 
 import { SLACK_VERIFICATION_TOKEN, SLACK_TOKEN } from '../config';
+import { generateTokenFor } from './chat';
 
 export const client = new WebClient(SLACK_TOKEN);
 
@@ -32,6 +33,7 @@ export function createInitialMessage({
   accountSid,
   sessionId
 }) {
+  const token = generateTokenFor('devangel');
   const attachments = [
     {
       color: `good`,
@@ -47,7 +49,7 @@ export function createInitialMessage({
           style: 'primary',
           type: 'button',
           text: 'Open Chat 🗯',
-          url: `http://localhost:3000/session/${sessionId}`
+          url: `http://localhost:3000/session/${sessionId}?token=${token}`
         },
         {
           type: 'button',
