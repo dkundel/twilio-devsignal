@@ -52,3 +52,8 @@ export async function sendMessageToChannel(body, channel, identity) {
     from: identity
   });
 }
+
+export async function getChannelNameFromSid(sid) {
+  const { uniqueName } = await chatService.channels(sid).fetch();
+  return uniqueName;
+}
