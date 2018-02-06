@@ -26,7 +26,8 @@ export default async function handleRequest(req, res, next) {
   const opts = createInitialMessage(info);
 
   try {
-    await createChannel(accountSid, sessionId, name);
+    const identity = await createChannel(accountSid, sessionId, name);
+    info.identity = identity;
     const msg = await sendMessageWithOptions(
       channelId,
       `Fast someone needs your help! Anyone up for the challenge?`,

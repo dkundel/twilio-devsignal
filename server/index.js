@@ -3,6 +3,7 @@ import { resolve } from 'path';
 
 import webhookRouter from './webhooks';
 import apiRouter from './api';
+import { setup } from './services/data';
 
 const PORT = process.env.PORT || 4000;
 
@@ -22,6 +23,7 @@ if (isProd) {
   });
 }
 
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
+  await setup();
   console.log(`Server listening on port ${PORT}`);
 });

@@ -36,7 +36,7 @@ export async function createNewSession(sessionId, threadId, info) {
     data
   });
   const createThreadEntry = service
-    .syncMap(threadToSessionMap)
+    .syncMaps(threadToSessionMap)
     .syncMapItems.create({
       key: threadId,
       data: { sessionId }

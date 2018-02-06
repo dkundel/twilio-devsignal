@@ -45,3 +45,10 @@ export async function createChannel(accountSid, sessionId, name) {
 
   return userIdentity;
 }
+
+export async function sendMessageToChannel(body, channel, identity) {
+  await chatService.channels(channel).messages.create({
+    body,
+    from: identity
+  });
+}

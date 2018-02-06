@@ -3,6 +3,8 @@ import { WebClient } from '@slack/client';
 
 import { SLACK_VERIFICATION_TOKEN, SLACK_TOKEN } from '../config';
 import { sendMessageToThread, lookUpUser, getBotId } from '../services/slack';
+import { getInfoFromThreadId } from '../services/data';
+import { sendMessageToChannel } from '../services/chat';
 
 const slackEvents = createSlackEventAdapter(SLACK_VERIFICATION_TOKEN);
 const client = new WebClient(SLACK_TOKEN);
@@ -21,7 +23,7 @@ async function isThreadStartedByBot(evt) {
   }
 
   const { isBot } = await lookUpUser(parent_user_id);
-  const { user_id } = await getBotId();
+  const user_id = await getBotId();
 
   return isBot && parent_user_id === user_id;
 }
@@ -39,6 +41,9 @@ async function onMessage(evt) {
 
   // message is in response to a thread that was started by this bot
   // handle message
+  const info = await getInfoFromThreadId(evt.thread_ts);
+  // console.log(evt);
+  await sendMessageToChannel(evt.text, info.sessionId);
 }
 
 async function onAppMention(evt) {
