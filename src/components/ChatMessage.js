@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import * as moment from 'moment';
+import { emojify } from 'node-emoji';
 
 import { TwilioDusk, TwilioRed, TwilioCerulean } from '../utils/colors';
 
@@ -35,7 +36,7 @@ export default class ChatMessage extends Component {
             <strong>{author}</strong> wrote {timeInfo}...
           </MessageAuthor>
         </MessageDetails>
-        <MessageBody>{body}</MessageBody>
+        <MessageBody>{emojify(body)}</MessageBody>
       </Message>
     );
   }
