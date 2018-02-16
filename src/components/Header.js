@@ -18,6 +18,17 @@ const HeaderGroup = styled.hgroup`
   img {
     display: block;
   }
+
+  a {
+    &,
+    &:hover,
+    &:focus,
+    &:visited {
+      color: inherit;
+      text-decoration: none;
+      cursor: pointer;
+    }
+  }
 `;
 
 const Title = styled.h1`
@@ -33,11 +44,13 @@ export default class Header extends Component {
     return (
       <HeaderContainer>
         <HeaderGroup>
-          <img
-            src="https://www.twilio.com/marketing/bundles/company-brand/img/logos/white/twilio-logo-white.svg"
-            alt="Twilio Logo"
-          />{' '}
-          <Title>Devsignal</Title>
+          <a href="/">
+            <img
+              src="https://www.twilio.com/marketing/bundles/company-brand/img/logos/white/twilio-logo-white.svg"
+              alt="Twilio Logo"
+            />{' '}
+            <Title>Devsignal</Title>
+          </a>
         </HeaderGroup>
       </HeaderContainer>
     );

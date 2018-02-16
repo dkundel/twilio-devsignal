@@ -19,10 +19,16 @@ export default class Footer extends Component {
   render() {
     return (
       <FooterContainer>
-        <img
-          src="https://www.twilio.com/marketing/bundles/company-brand/img/logos/red/twilio-mark-red.svg"
-          alt="Twilio Logo"
-        />
+        <a
+          href="https://www.twilio.com/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <img
+            src="https://www.twilio.com/marketing/bundles/company-brand/img/logos/red/twilio-mark-red.svg"
+            alt="Twilio Logo"
+          />
+        </a>
         <Small>
           Created by{' '}
           <Link href="https://github.com/dkundel/about-me">Dominik Kundel</Link>.
