@@ -3,6 +3,9 @@ import { load as loadConfig } from 'dotenv';
 if (process.env.NODE_ENV !== 'production') {
   loadConfig();
 }
+export const EVENT_CODES = (process.env.EVENT_CODES || '')
+  .split(',')
+  .map(x => x.toUpperCase().trim());
 
 export const {
   TWILIO_ACCOUNT_SID,

@@ -1,6 +1,7 @@
 import uuid from 'uuid/v4';
 
 import {
+  EVENT_CODES,
   TWILIO_ACCOUNT_SID,
   TWILIO_API_KEY,
   TWILIO_API_SECRET,
@@ -20,12 +21,32 @@ import {
 import { createNewSession } from '../services/data';
 
 export default async function handleRequest(req, res, next) {
-  const { message, lang, username: name, product } = req.body;
-  const accountSid = 'ACxxxxxxxxxxxxxxx';
+  const {
+    message,
+    lang,
+    username: name,
+    product,
+    accountSid,
+    eventCode
+  } = req.body;
+
+  if (!EVENT_CODES.includes(eventCode.toUpperCase())) {
+    res.status(403).send('Invalid Event Code');
+    return;
+  }
+
   const sessionId = uuid();
   const channelId = BOT_CHANNEL;
 
-  const info = { message, lang, name, product, accountSid, sessionId };
+  const info = {
+    message,
+    lang,
+    name,
+    product,
+    accountSid,
+    sessionId,
+    eventCode
+  };
 
   const opts = createInitialMessage(info);
 
@@ -35,7 +56,7 @@ export default async function handleRequest(req, res, next) {
     info.identity = identity;
     const msg = await sendMessageWithOptions(
       channelId,
-      `Fast someone needs your help! Anyone up for the challenge?`,
+      `Fast someone needs your help! Anyone up for the challenge? \n You can reply inline in this thread or by opening clicking the 'Open Chat' button.`,
       opts
     );
     await createNewSession(sessionId, msg.ts, info);

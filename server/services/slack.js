@@ -31,7 +31,8 @@ export function createInitialMessage({
   name,
   product,
   accountSid,
-  sessionId
+  sessionId,
+  eventCode
 }) {
   const token = generateTokenFor('devangel');
   const attachments = [
@@ -42,7 +43,8 @@ export function createInitialMessage({
       fields: [
         { title: 'Name', value: name, short: true },
         { title: 'Product', value: product, short: true },
-        { title: 'Language', value: lang, short: true }
+        { title: 'Language', value: lang, short: true },
+        { title: 'Event', value: eventCode, short: true }
       ],
       actions: [
         {
