@@ -3,14 +3,11 @@ import React, { Component } from 'react';
 import {
   Button,
   FormGroup,
-  Label,
-  TextArea,
   Input,
-  Select,
+  Label,
   Link,
-  Headline,
-  SmallText,
-  Ruler
+  Select,
+  TextArea
 } from '../components/common';
 import { SupportedLanguages, SupportedProducts } from '../shared/consts';
 

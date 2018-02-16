@@ -1,18 +1,6 @@
 import React, { Component, Fragment } from 'react';
 
-import {
-  Button,
-  FormGroup,
-  Label,
-  TextArea,
-  Input,
-  Select,
-  Link,
-  Headline,
-  SmallText,
-  Ruler,
-  ErrorMessage
-} from '../components/common';
+import { ErrorMessage, Headline, Ruler, SmallText } from '../components/common';
 import RequestForm from '../components/RequestForm';
 import { TwilioCerulean } from '../utils/colors';
 import { BarLoader } from 'react-spinners';

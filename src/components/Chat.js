@@ -3,7 +3,7 @@ import ChatClient from 'twilio-chat';
 import styled from 'styled-components';
 import { BounceLoader } from 'react-spinners';
 
-import { TwilioRed, TwilioCerulean, TwilioDusk } from '../utils/colors';
+import { TwilioCerulean } from '../utils/colors';
 import { Input, Button, SmallText, ErrorMessage } from './common';
 import ChatMessageList from './ChatMessageList';
 
