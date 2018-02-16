@@ -1,6 +1,6 @@
 import { WebClient } from '@slack/client';
 
-import { SLACK_VERIFICATION_TOKEN, SLACK_TOKEN } from '../config';
+import { SLACK_VERIFICATION_TOKEN, SLACK_TOKEN, DOMAIN } from '../config';
 import { generateTokenFor } from './chat';
 
 export const client = new WebClient(SLACK_TOKEN);
@@ -51,7 +51,7 @@ export function createInitialMessage({
           style: 'primary',
           type: 'button',
           text: 'Open Chat 🗯',
-          url: `http://localhost:3000/session/${sessionId}?token=${token}`
+          url: `${DOMAIN}/session/${sessionId}?token=${token}`
         },
         {
           type: 'button',
