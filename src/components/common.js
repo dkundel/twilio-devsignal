@@ -110,6 +110,7 @@ export const Link = styled.a`
 export const SmallText = styled.p`
   color: ${TwilioDusk};
   font-size: 0.8em;
+  line-height: 1.5em;
 `;
 
 export const Headline = styled.h2`
