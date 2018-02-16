@@ -97,7 +97,7 @@ export default class Chat extends Component {
   async parseMessageInfo(message) {
     const { sid, body, author, timestamp } = message;
     const friendlyName = await this.getFriendlyName(author);
-    console.log(message);
+
     return {
       sid,
       body,
