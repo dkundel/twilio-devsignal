@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react';
 import styled from 'styled-components';
 
 import { Headline, ActionLink, Text } from '../components/common';
+import { TwilioRed } from '../utils/colors';
 
 const CenterParagraph = styled.p`
   text-align: center;
@@ -10,6 +11,11 @@ const CenterParagraph = styled.p`
 
 const DevSignalImage = styled.img`
   width: 140px;
+`;
+
+const HighlightText = styled(Text)`
+  color: ${TwilioRed};
+  font-style: italic;
 `;
 
 export default class Home extends Component {
@@ -23,6 +29,9 @@ export default class Home extends Component {
           />
         </CenterParagraph>
         <Headline>Welcome to the Twilio Devsignal</Headline>
+        <HighlightText>
+          Summon Twilio Developer Evangelist like Jim Gordon summons Batman
+        </HighlightText>
         <Text>
           Are you currently at a hackathon and can't find any Twilio
           representative around or need additional help with your Twilio
