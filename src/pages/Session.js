@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { parse } from 'query-string';
 
 import Chat from '../components/Chat';
+import { Headline } from '../components/common';
 
 export default class Session extends Component {
   constructor(props) {
@@ -27,7 +28,7 @@ export default class Session extends Component {
 
     return (
       <Fragment>
-        <p>Session</p>
+        <Headline>Your Help Session</Headline>
         <Chat token={token} channelName={id} />
       </Fragment>
     );

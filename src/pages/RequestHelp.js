@@ -5,27 +5,30 @@ import {
   FormGroup,
   Label,
   TextArea,
-  Input
+  Input,
+  Select,
+  Link,
+  Headline,
+  SmallText,
+  Ruler
 } from '../components/common';
-import { SupportedLanguages, SupportedProducts } from '../shared/consts';
+import RequestForm from '../components/RequestForm';
+import { TwilioCerulean } from '../utils/colors';
+import { BarLoader } from 'react-spinners';
 
 export default class RequestHelp extends Component {
   constructor() {
     super();
     this.submitForm = this.submitForm.bind(this);
+    this.state = {
+      loading: false,
+      error: undefined
+    };
   }
 
-  async submitForm(evt) {
-    evt.preventDefault();
-    const form = evt.target;
-    const { username, lang, product, message } = form;
-    const info = {
-      username: username.value,
-      lang: lang.value,
-      product: product.value,
-      message: message.value
-    };
-
+  async submitForm(info) {
+    console.log(info);
+    this.setState({ loading: true });
     try {
       const resp = await fetch('/api/request', {
         method: 'POST',
@@ -35,53 +38,50 @@ export default class RequestHelp extends Component {
         })
       });
 
+      if (!resp.ok) {
+        throw new Error(await resp.text());
+      }
+
       const { token, channelName } = await resp.json();
       localStorage.setItem(channelName, token);
       this.props.history.push(`/session/${channelName}`);
     } catch (err) {
       console.error(err);
+      this.setState({ loading: false, error: err.message });
     }
   }
   render() {
     return (
       <Fragment>
-        <p>Hello</p>
-        <form onSubmit={this.submitForm}>
-          <FormGroup>
-            <Label for="nameInput">What's your name?</Label>
-            <Input type="text" name="username" id="nameInput" />
-          </FormGroup>
-          <FormGroup>
-            <Label for="programmingLanguage">
-              What programming language are you using?
-            </Label>
-            <select id="programmingLanguage" name="lang">
-              {SupportedLanguages.map(lang => (
-                <option key={lang.key} value={lang.key}>
-                  {lang.name}
-                </option>
-              ))}
-            </select>
-          </FormGroup>
-          <FormGroup>
-            <Label for="twilioProduct">
-              Which Twilio Product do you need help with?
-            </Label>
-            <select id="twilioProduct" name="product">
-              {SupportedProducts.map(lang => (
-                <option key={lang.key} value={lang.key}>
-                  {lang.name}
-                </option>
-              ))}
-            </select>
-          </FormGroup>
-          <FormGroup>
-            <Label for="message">Please describe your issue briefly.</Label>
-            <TextArea name="message" id="message" />
-          </FormGroup>
-          <Button type="submit">Request Help</Button>
-        </form>
+        <Headline>Request for Help</Headline>
+        <SmallText>
+          Before we can assist you, we'll need a few pieces of information from
+          you.
+        </SmallText>
+        <SmallText>
+          If you are wondering what your Event Code is, you should have gotten
+          this from the Twilio represenatative at your event. When in doubt, ask
+          one of your fellow attendees or the organizer.
+        </SmallText>
+        <Ruler />
+        {this.renderError()}
+        <RequestForm onSubmit={this.submitForm} disabled={this.state.loading} />
+        {this.renderLoader()}
       </Fragment>
     );
+  }
+
+  renderError() {
+    if (!this.state.error) {
+      return <Fragment />;
+    }
+    return <p>{this.state.error}</p>;
+  }
+
+  renderLoader() {
+    if (!this.state.loading) {
+      return <Fragment />;
+    }
+    return <BarLoader color={TwilioCerulean} width={140} />;
   }
 }
