@@ -22,8 +22,8 @@ export default class RequestForm extends Component {
     this.state = {
       form: {
         username: '',
-        lang: undefined,
-        product: undefined,
+        lang: SupportedLanguages[0].key,
+        product: SupportedProducts[0].key,
         message: '',
         eventCode: '',
         accountSid: ''
