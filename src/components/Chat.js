@@ -4,13 +4,8 @@ import styled from 'styled-components';
 import { BounceLoader } from 'react-spinners';
 
 import { TwilioRed, TwilioCerulean, TwilioDusk } from '../utils/colors';
-import { Input, Button, SmallText } from './common';
+import { Input, Button, SmallText, ErrorMessage } from './common';
 import ChatMessageList from './ChatMessageList';
-
-const ErrorMessage = styled.p`
-  color: ${TwilioRed};
-  font-weight: bold;
-`;
 
 const MessageInput = styled(Input)`
   flex: 1;
@@ -57,7 +52,16 @@ export default class Chat extends Component {
       await this.initialize();
     } catch (err) {
       console.error(err);
-      this.setState({ error: 'Something failed with establishing the chat' });
+      if (err.message.indexOf('token is expired') !== -1) {
+        this.setState({
+          error: 'Your session timed out. Please create a new one.'
+        });
+      } else {
+        this.setState({
+          error:
+            'Something failed with establishing the chat. Try creating a new request.'
+        });
+      }
     }
   }
 
