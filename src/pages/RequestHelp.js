@@ -10,7 +10,8 @@ import {
   Link,
   Headline,
   SmallText,
-  Ruler
+  Ruler,
+  ErrorMessage
 } from '../components/common';
 import RequestForm from '../components/RequestForm';
 import { TwilioCerulean } from '../utils/colors';
@@ -75,7 +76,7 @@ export default class RequestHelp extends Component {
     if (!this.state.error) {
       return <Fragment />;
     }
-    return <p>{this.state.error}</p>;
+    return <ErrorMessage>{this.state.error}</ErrorMessage>;
   }
 
   renderLoader() {
