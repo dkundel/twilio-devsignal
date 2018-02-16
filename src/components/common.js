@@ -1,3 +1,4 @@
+import React from 'react';
 import styled from 'styled-components';
 
 import {
@@ -127,3 +128,30 @@ export const Ruler = styled.hr`
   border-bottom: 1px solid;
   margin: 25px;
 `;
+
+const ErrorContent = styled.p`
+  font-size: 0.8em;
+  align-self: center;
+`;
+const ErrorImage = styled.img`
+  height: 40px;
+`;
+const ErrorContainer = styled.div`
+  margin-bottom: 20px;
+  border-left: 3px solid ${TwilioRed};
+  padding: 10px 20px;
+  padding-left: 0;
+  display: flex;
+`;
+
+export const ErrorMessage = ({ children }) => {
+  return (
+    <ErrorContainer>
+      <ErrorImage
+        src={process.env.PUBLIC_URL + '/images/error-sign.svg'}
+        alt="Error Symbol"
+      />
+      <ErrorContent>{children}</ErrorContent>
+    </ErrorContainer>
+  );
+};
