@@ -23,7 +23,7 @@ export async function handleRequest(req, res, next) {
   const sessionId = await getChannelNameFromSid(ChannelSid);
   const info = await getInfoFromSessionId(sessionId);
 
-  if (info.identity !== From && From !== 'devangel') {
+  if (From !== info.identity && From !== 'devangel') {
     // no need to forward to slack
     res.send();
     return;
