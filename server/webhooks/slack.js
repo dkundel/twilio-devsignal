@@ -11,7 +11,6 @@ const client = new WebClient(SLACK_TOKEN);
 
 function safeAsync(fn) {
   return (...args) => {
-    console.log(...args);
     fn(...args).catch(console.error);
   };
 }
