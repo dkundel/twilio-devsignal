@@ -28,7 +28,8 @@
     "uuid": "^3.2.1"
   },
   "scripts": {
-    "dev": "stmux -w always -m beep,system -- [ [ \"npm run dev:react\" ] : [ \"npm run dev:server\" ] ]",
+    "dev":
+      "stmux -w always -m beep,system -- [ [ \"npm run dev:react\" ] : [ \"npm run dev:server\" ] ]",
     "dev:react": "react-scripts start",
     "dev:server": "nodemon server/index.js --exec babel-node",
     "start": "node .",
@@ -37,12 +38,10 @@
     "build:server": "babel server -d dist",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "prepare": "npm run build"
+    "postinstall": "npm run build"
   },
   "nodemonConfig": {
-    "watch": [
-      "server"
-    ]
+    "watch": ["server"]
   },
   "proxy": "http://localhost:4000",
   "devDependencies": {
