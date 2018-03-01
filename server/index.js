@@ -1,5 +1,6 @@
 import express from 'express';
 import { resolve } from 'path';
+import forceSsl from 'express-force-ssl';
 
 import webhookRouter from './webhooks';
 import apiRouter from './api';
@@ -11,6 +12,7 @@ const app = express();
 const isProd = process.env.NODE_ENV === 'production';
 
 if (isProd) {
+  app.use(forceSsl);
   app.use(express.static(resolve(__dirname, '../build')));
 }
 
