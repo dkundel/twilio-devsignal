@@ -12,7 +12,7 @@ const app = express();
 const isProd = process.env.NODE_ENV === 'production';
 
 if (isProd) {
-  app.use(forceSsl);
+  // app.use(forceSsl);
   app.use(express.static(resolve(__dirname, '../build')));
 }
 
