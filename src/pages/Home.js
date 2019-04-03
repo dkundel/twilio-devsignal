@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import styled from 'styled-components';
-
-import { Headline, ActionLink, Text } from '../components/common';
+import { Headline, Text } from '../components/common';
 import { TwilioRed } from '../utils/colors';
 
 const CenterParagraph = styled.p`
@@ -43,7 +42,7 @@ export default class Home extends Component {
           going to try to get back to you as soon as possible!
         </Text>
         <CenterParagraph>
-          <ActionLink href="/request">Request Help</ActionLink>
+          {/* <ActionLink href="/request">Request Help</ActionLink> */}
         </CenterParagraph>
       </Fragment>
     );
